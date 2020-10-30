@@ -124,11 +124,8 @@
                                 <div class="col-12 mb-0">
                                     <figure class="view zoom overlay rounded z-depth-1 main-img">
 
-                                        <img src="images/teddy_1.jpg" class="img-fluid z-depth-1">
-                                        <div class="mask">
-                                            <img class="img-fluid w-100" src="images/teddy_1.jpg">
-                                            <div class="mask rgba-black-slight"></div>
-                                        </div>
+                                        <img src="" class="img-fluid z-depth-1" id="image">
+
                                     </figure>
 
                                 </div>
@@ -139,27 +136,11 @@
                     </div>
                     <div class="col-md-6">
 
-                        <h5>Friendly Teddy</h5>
+                        <h5 id="teddyName">Friendly Teddy</h5>
                         <p class="mb-2 text-muted text-uppercase small">Teddy Bear</p>
-                        <ul class="rating">
-                            <li>
-                                <i class="fas fa-star fa-sm text-primary"></i>
-                            </li>
-                            <li>
-                                <i class="fas fa-star fa-sm text-primary"></i>
-                            </li>
-                            <li>
-                                <i class="fas fa-star fa-sm text-primary"></i>
-                            </li>
-                            <li>
-                                <i class="fas fa-star fa-sm text-primary"></i>
-                            </li>
-                            <li>
-                                <i class="far fa-star fa-sm text-primary"></i>
-                            </li>
-                        </ul>
-                        <p><span class="mr-1"><strong>$12.99</strong></span></p>
-                        <p class="pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio, officia quis dolore quos sapiente tempore alias.</p>
+
+                        <p><span class="mr-1" id="teddyPrice"><strong>$12.99</strong></span></p>
+                        <p class="pt-1" id="teddyDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, sapiente illo. Sit error voluptas repellat rerum quidem, soluta enim perferendis voluptates laboriosam. Distinctio, officia quis dolore quos sapiente tempore alias.</p>
                         <hr>
                         <div class="table-responsive mb-2">
                             <table class="table table-sm table-borderless no-border">
@@ -171,34 +152,24 @@
                                     <tr>
                                         <td class="pl-0">
                                             <div class="def-number-input number-input safari_only mb-0">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="minus"></button>
+
                                                 <input class="quantity" min="0" name="quantity" value="1" type="number">
-                                                <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="plus"></button>
+
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="mt-1">
-                                                <div class="form-check form-check-inline pl-0">
-                                                    <input type="radio" class="form-check-input" id="small" name="materialExampleRadios" checked>
-                                                    <label class="form-check-label small text-uppercase card-link-secondary" for="small">Brown</label>
-                                                </div>
-                                                <div class="form-check form-check-inline pl-0">
-                                                    <input type="radio" class="form-check-input" id="medium" name="materialExampleRadios">
-                                                    <label class="form-check-label small text-uppercase card-link-secondary" for="medium">Black</label>
-                                                </div>
-                                                <div class="form-check form-check-inline pl-0">
-                                                    <input type="radio" class="form-check-input" id="large" name="materialExampleRadios">
-                                                    <label class="form-check-label small text-uppercase card-link-secondary" for="large">White</label>
-                                                </div>
+                                            <div class="mt-1" id="teddyColors">
+
+
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Buy now</button>
+                        <button type="button" class="btn btn-primary btn-md mr-1 mb-2">Add to cart</button>
                         <button type="button" class="btn btn-light btn-md mr-1 mb-2"><i
-            class="fas fa-shopping-cart pr-2"></i>Add to cart</button>
+            class="fas fa-shopping-cart pr-2"></i></button>
                     </div>
                 </div>
 
@@ -212,7 +183,7 @@
     <!-- Body end-->
     <!--- Footer start-->
     <footer>
-
+        <script src="js/product.js"></script>
     </footer>
     <!--- Footer end-->
 
