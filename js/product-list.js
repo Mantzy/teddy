@@ -84,3 +84,6 @@ request.onload = function() {
 }
 
 request.send()
+
+let itemNumberInCart = document.getElementById('itemNumberInCart')
+itemNumberInCart.innerHTML = quantity

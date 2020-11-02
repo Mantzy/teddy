@@ -32,3 +32,6 @@ function updateCartTotal() {
     }
     document.getElementsByClassName('totalPrice')[0].innerText = total
 }
+
+
+localStorage.setItem('myDataStorage', JSON.stringify(myData));

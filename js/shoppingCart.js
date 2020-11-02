@@ -1,11 +1,7 @@
-const urlParams = new URLSearchParams(window.location.search);
-const id = urlParams.get('id');
-
 let image = document.getElementById('image')
 let teddyName = document.getElementById('teddyName')
 let teddyPrice = document.getElementById('teddyPrice')
 let teddyColor = document.getElementById('teddyColors')
-let teddyDescription = document.getElementById('teddyDescription')
 let product
 let quantity = JSON.parse(localStorage.getItem('quantity'))
 if (quantity == null) {
@@ -18,11 +14,9 @@ if (productsInCart == null) {
 
 }
 
+localStorage.setItem('productsInCart', JSON.stringify(myData));
 
 
-
-var request = new XMLHttpRequest()
-request.open('GET', 'http://localhost:3000/api/teddies/' + id, true)
 request.onload = function() {
     // Begin accessing JSON data here
     var data = JSON.parse(this.response)
@@ -30,7 +24,6 @@ request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
         image.src = data.imageUrl
         teddyName.textContent = data.name
-        teddyDescription.textContent = data.description
         teddyPrice.textContent = `
             $${data.price / 100}.00
             `
@@ -52,28 +45,4 @@ request.onload = function() {
 
 
 
-}
-
-request.send()
-
-// add teddies to cart
-let addButton = document.getElementById('addToCart')
-
-
-
-
-addButton.addEventListener('click', () => {
-    addToCart(product)
-
-})
-
-function addToCart(product) {
-    let productsInCart = []
-    productsInCart = JSON.parse(localStorage.getItem('productsInCart'))
-    productsInCart.push(product)
-    localStorage.setItem('productsInCart', JSON.stringify(productsInCart))
-    let quantity = JSON.parse(localStorage.getItem('quantity')) + 1
-    localStorage.setItem('quantity', JSON.stringify(quantity))
-    let itemNumberInCart = document.getElementById('itemNumberInCart')
-    itemNumberInCart.innerHTML = quantity
 }
