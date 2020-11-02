@@ -17,7 +17,8 @@ if (productsInCart == null) {
     localStorage.setItem('productsInCart', '[]')
 
 }
-
+let itemNumberInCart = document.getElementById('itemNumberInCart')
+itemNumberInCart.innerHTML = quantity
 
 
 

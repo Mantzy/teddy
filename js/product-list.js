@@ -2,6 +2,7 @@ const app = document.getElementById('product-full');
 
 
 
+
 const container = document.createElement('div');
 container.setAttribute('class', 'mb-4 row');
 
@@ -85,5 +86,7 @@ request.onload = function() {
 
 request.send()
 
+// product number in cart
+let teddyQuantity = JSON.parse(localStorage.getItem('quantity'))
 let itemNumberInCart = document.getElementById('itemNumberInCart')
-itemNumberInCart.innerHTML = quantity
+itemNumberInCart.innerHTML = teddyQuantity
