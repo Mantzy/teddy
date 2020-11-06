@@ -4,6 +4,7 @@ let teddyPrice = document.getElementById('teddyPrice')
 let teddyColor = document.getElementById('teddyColors')
 let teddyQunatity = document.getElementById('teddyQuantity')
 let product
+    //item number in cart
 let quantity = JSON.parse(localStorage.getItem('quantity'))
 let itemNumberInCart = document.getElementById('itemNumberInCart')
 itemNumberInCart.innerHTML = quantity
@@ -12,46 +13,64 @@ let productsInCart = JSON.parse(localStorage.getItem('productsInCart'))
 console.log(productsInCart)
 console.log(quantity)
 
-teddyQunatity.innerText = quantity
-teddyName.innerText = productsInCart.name
-teddyPrice.textContent = `
-    $${productsInCart.price / 100}.00
-    `
-image.src = productsInCart.imageUrl
 
+// test
 
+function displayCart() {
+    let cartItems = localStorage.getItem('productsInCart')
+    cartItems = JSON.parse(cartItems);
+    let productContainer = document.getElementById('products')
+    if (cartItems && productContainer) {
+        let output = ''
+        let total = 0
+        cartItems.forEach(function(teddy) {
+            output +=
+                `<div class="row mb-4 cartRow" id="products">
+                <div class="col-md-5 col-lg-3 col-xl-3">
+                    <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                        <img class="img-fluid w-100" src="${teddy.imageUrl}" alt="Teddy">
 
+                    </div>
+                </div>
+                <div class="col-md-7 col-lg-9 col-xl-9">
+                    <div>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5 id="teddyName">${teddy.name}</h5>
+                                <p class="mb-2 text-muted text-uppercase small" id="teddyColor">Color:${teddy.colors}</p>
 
-var request = new XMLHttpRequest()
-request.open('GET', 'http://localhost:3000/api/teddies', true)
-request.onload = function() {
-    // Begin accessing JSON data here
-    var data = JSON.parse(localStorage.getItem('productsInCart'))
-    product = data
-    if (request.status >= 200 && request.status < 400) {
-        image.src = data.imageUrl
-        teddyName.textContent = data.name
-        teddyDescription.textContent = data.description
-        teddyPrice.textContent = `
-            $${data.price / 100}.00
-            `
-        console.log(data.colors)
-        data.colors.forEach(element => {
-            teddyColor.innerHTML += `<div class="form-check form-check-inline pl-0">
-            <input type="radio" id="${element}" class="form-check-input" name="colorRadio" value="${element}">
-            <label class="form-check-label small text-uppercase card-link-secondary" for="${element}">${element}</label>
-        </div>`
+                            </div>
+                            <div>
+                                <div class="def-number-input number-input safari_only mb-0 w-100" id="teddyQuantity">
+
+                                    <input class="quantity" min="1" name="quantity" value="1" type="number">
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <button type="button" class="card-link-secondary small text-uppercase mr-3 letter-green removeItem" onclick="deleteProduct"><i class="fas fa-trash-alt mr-1"></i> Remove item </button>
+                            </div>
+                            <p class="mb-0" id="teddyPrice">$${teddy.price / 100}.00<span><strong class="itemPrice"></strong></span></p class="mb-0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            `;
+            total += teddy.price / 100
+
 
 
         });
+        productContainer.innerHTML = output
 
+        let displayTotal = document.getElementById('total');
+        displayTotal.innerHTML = `$${total}.00`;
 
-    } else {
-        const errorMessage = document.createElement('marquee')
-        errorMessage.textContent = `The Teddies are hibernating for the winter`
-        app.appendChild(errorMessage)
     }
 
-
-
 }
+displayCart()
