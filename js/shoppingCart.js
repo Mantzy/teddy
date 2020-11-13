@@ -6,6 +6,16 @@ let teddyQunatity = document.getElementById('teddyQuantity')
 let product
 
 //item number in cart
+const updateCart = () => {
+    let quantity = JSON.parse(localStorage.getItem('quantity'))
+    let itemNumberInCart = document.getElementById('itemNumberInCart')
+    itemNumberInCart.innerHTML = quantity
+
+    let productsInCart = JSON.parse(localStorage.getItem('productsInCart'))
+}
+
+updateCart()
+
 let quantity = JSON.parse(localStorage.getItem('quantity'))
 let itemNumberInCart = document.getElementById('itemNumberInCart')
 itemNumberInCart.innerHTML = quantity
@@ -15,7 +25,7 @@ console.log(productsInCart)
 console.log(quantity)
 
 
-
+//delete product from cart
 function deleteProduct(_id, qty) {
     let cartItems = localStorage.getItem('productsInCart')
 
@@ -42,7 +52,7 @@ function deleteProduct(_id, qty) {
 }
 
 
-
+//display products in cart
 function displayCart() {
     let cartItems = localStorage.getItem('productsInCart')
     cartItems = JSON.parse(cartItems);
@@ -70,7 +80,7 @@ function displayCart() {
                             <div>
                                 <div class="def-number-input number-input safari_only mb-0 w-100" id="teddyQuantity">
 
-                                <i class="far fa-minus-square"></i> ${teddy.productQty}<i class="far fa-plus-square"></i>
+                                <i class="far fa-minus-square m-2" onclick="decreaseNumber('${teddy.id}')"></i> ${teddy.productQty}<i class="far fa-plus-square m-2" onclick="increaseNumber('${teddy.id}')"></i>
 
                                 </div>
 
@@ -87,17 +97,99 @@ function displayCart() {
             </div>
 
             `;
-            total += teddy.price / 100
+            total += teddy.price / 100 * teddy.productQty
 
 
 
         });
         productContainer.innerHTML = output
 
-        let displayTotal = document.getElementById('total');
+        let displayTotal = document.getElementById('total')
         displayTotal.innerHTML = `$${total}.00`;
 
     }
 
 }
 displayCart()
+updateCart()
+
+//increase product number
+function increaseNumber(id) {
+    let productList = JSON.parse(localStorage.getItem('productsInCart'))
+    let productId = productList.findIndex(o => o.id == id)
+    let teddyNumber = localStorage.getItem('quantity')
+    teddyNumber = parseInt(teddyNumber)
+    if (productId != -1) {
+        productList[productId].productQty += 1
+        localStorage.setItem('quantity', teddyNumber + 1)
+    }
+    localStorage.setItem('productsInCart', JSON.stringify(productList))
+    displayCart()
+    updateCart()
+
+}
+
+//decrease product number
+function decreaseNumber(id) {
+    let productList = JSON.parse(localStorage.getItem('productsInCart'))
+    let productId = productList.findIndex(o => o.id == id)
+    let teddyNumber = localStorage.getItem('quantity')
+    teddyNumber = parseInt(teddyNumber)
+    if (productId != -1) {
+        if (productList[productId].productQty == 1) {
+            localStorage.setItem('quantity', teddyNumber - 1)
+            productList.splice(productId, 1)
+        } else {
+            productList[productId].productQty -= 1
+            localStorage.setItem('quantity', teddyNumber - 1)
+        }
+    }
+    localStorage.setItem('productsInCart', JSON.stringify(productList))
+    displayCart()
+    updateCart()
+
+
+}
+
+// post customer details
+const postDetails = () => {
+    let contact = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        address: document.getElementById('street').value,
+        city: document.getElementById('city').value,
+        email: document.getElementById('emailAddress').value
+    }
+    let cartItems = localStorage.getItem('productsInCart')
+    cartItems = JSON.parse(cartItems)
+    products = [];
+    cartItems.forEach((product) => {
+        products.push(product.id)
+    })
+    if (contact.firstName != "" && contact.lastName != "" && contact.address != "" && contact.city != "" && contact.email != "") {
+        let data = {
+                contact: contact,
+                products: products
+            }
+            // XMLhttp request to post the data back to the server
+            //when the post request is succesfull, retrieve the order ID
+            //send the order ID with the total cost of the product through URL to the confirmation page ( window.location.href)
+
+
+
+
+
+
+
+
+
+    } else {
+        alert('Please fill all the fields!')
+    }
+
+    console.log(data)
+}
+
+// order button
+let makeOrder = document.getElementById('order')
+makeOrder.addEventListener('click', postDetails)
