@@ -69,9 +69,27 @@ addButton.addEventListener('click', () => {
 })
 
 function addToCart(product) {
+    product = {
+        id: product._id,
+        name: product.name,
+        productQty: 1,
+        price: product.price,
+        imageUrl: product.imageUrl
+
+    }
     let productsInCart = []
     productsInCart = JSON.parse(localStorage.getItem('productsInCart'))
-    productsInCart.push(product)
+        // productsInCart.push(product)
+    if (productsInCart.length == 0) {
+        productsInCart.push(product)
+    } else {
+        let index = productsInCart.findIndex(o => o.id == product.id)
+        if (index != -1) {
+            productsInCart[index].productQty += 1;
+        } else {
+            productsInCart.push(product)
+        }
+    }
     localStorage.setItem('productsInCart', JSON.stringify(productsInCart))
     let quantity = JSON.parse(localStorage.getItem('quantity')) + 1
     localStorage.setItem('quantity', JSON.stringify(quantity))

@@ -16,11 +16,12 @@ console.log(quantity)
 
 
 
-function deleteProduct(id, qty) {
+function deleteProduct(_id, qty) {
     let cartItems = localStorage.getItem('productsInCart')
-    cartItems = JSON.parse(cartItems)
-    let index = cartItems.findIndex(product => product._id == id)
 
+    cartItems = JSON.parse(cartItems)
+    let index = cartItems.findIndex(product => product.id == _id)
+    let itemNumber = cartItems.findIndex(product => product.productQty == qty)
     let quantity = localStorage.getItem('quantity')
     localStorage.setItem('quantity', quantity - qty)
     if (index != -1) {
@@ -69,7 +70,7 @@ function displayCart() {
                             <div>
                                 <div class="def-number-input number-input safari_only mb-0 w-100" id="teddyQuantity">
 
-                                    <input class="quantity" min="1" name="quantity" value="1" type="number">
+                                <i class="far fa-minus-square"></i> ${teddy.productQty}<i class="far fa-plus-square"></i>
 
                                 </div>
 
@@ -77,7 +78,7 @@ function displayCart() {
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <button type="button" class="card-link-secondary small text-uppercase mr-3 letter-green removeItem" onclick="deleteProduct('${teddy._id}', 1)"><i class="fas fa-trash-alt mr-1"></i> Remove item </button>
+                                <button type="button" class="card-link-secondary small text-uppercase mr-3 letter-green removeItem" onclick="deleteProduct('${teddy.id}', 1)"><i class="fas fa-trash-alt mr-1"></i> Remove item </button>
                             </div>
                             <p class="mb-0" id="teddyPrice">$${teddy.price / 100}.00<span><strong class="itemPrice"></strong></span></p class="mb-0">
                         </div>
