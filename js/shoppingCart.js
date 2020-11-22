@@ -153,7 +153,9 @@ function decreaseNumber(id) {
 
 // post customer details
 const postDetails = () => {
-    let contact = {
+    let data = {}
+
+    const contact = {
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
         address: document.getElementById('street').value,
@@ -162,18 +164,37 @@ const postDetails = () => {
     }
     let cartItems = localStorage.getItem('productsInCart')
     cartItems = JSON.parse(cartItems)
-    products = [];
+    products = []
     cartItems.forEach((product) => {
         products.push(product.id)
     })
     if (contact.firstName != "" && contact.lastName != "" && contact.address != "" && contact.city != "" && contact.email != "") {
-        let data = {
+        data = {
                 contact: contact,
                 products: products
             }
             // XMLhttp request to post the data back to the server
-            //when the post request is succesfull, retrieve the order ID
-            //send the order ID with the total cost of the product through URL to the confirmation page ( window.location.href)
+        let http = new XMLHttpRequest();
+        let url = 'http://localhost:3000/api/teddies/order';
+        http.open('POST', url, true);
+        console.log(url);
+        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        http.onreadystatechange = function() { //Call a function when the state changes.
+            if (http.readyState == 4 && http.status == 200) {
+                console.log('Teddy');
+                console.log(JSON.parse(http.responseText));
+            } else {
+                console.log(http.status)
+            }
+        }
+
+        http.send(JSON.stringify(data));
+
+        // "<a href='order.html?id=" + response + "' ></a>"
+
+
+        //when the post request is succesfull, retrieve the order ID
+        //send the order ID with the total cost of the product through URL to the confirmation page ( window.location.href)
 
 
 
