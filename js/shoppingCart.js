@@ -62,7 +62,7 @@ function displayCart() {
         let total = 0
         cartItems.forEach(function(teddy) {
             output +=
-                `<div class="row mb-4 cartRow" id="products">
+                `<div class="row mb-4 cartRow px-5" id="products">
                 <div class="col-md-5 col-lg-3 col-xl-3">
                     <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
                         <img class="img-fluid w-100" src="${teddy.imageUrl}" alt="Teddy">
@@ -74,7 +74,7 @@ function displayCart() {
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h5 id="teddyName">${teddy.name}</h5>
-                                <p class="mb-2 text-muted text-uppercase small" id="teddyColor">Color:${teddy.colors}</p>
+                                
 
                             </div>
                             <div>
@@ -151,10 +151,22 @@ function decreaseNumber(id) {
 
 }
 
-// post customer details
-const postDetails = () => {
-    let data = {}
+//validate email
+function ValidateEmail(mail) {
+    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
+        return (true)
+    }
 
+    return (false)
+}
+
+
+// post customer details
+//const postDetails = () => {
+let postDetails = document.getElementById('orderButton')
+postDetails.addEventListener('click', () => {
+    //getting the details
+    let data = {}
     const contact = {
         firstName: document.getElementById('firstName').value,
         lastName: document.getElementById('lastName').value,
@@ -162,55 +174,68 @@ const postDetails = () => {
         city: document.getElementById('city').value,
         email: document.getElementById('emailAddress').value
     }
+
+    //getting the product ID-s from local storage
     let cartItems = localStorage.getItem('productsInCart')
     cartItems = JSON.parse(cartItems)
     products = []
     cartItems.forEach((product) => {
         products.push(product.id)
     })
-    if (contact.firstName != "" && contact.lastName != "" && contact.address != "" && contact.city != "" && contact.email != "") {
+
+    //checking if all details are valid
+    if (contact.firstName != "" && contact.lastName != "" && contact.address != "" && contact.city != "" && ValidateEmail(contact.email) != false) {
         data = {
                 contact: contact,
                 products: products
             }
             // XMLhttp request to post the data back to the server
-        let http = new XMLHttpRequest();
-        let url = 'http://localhost:3000/api/teddies/order';
-        http.open('POST', url, true);
-        console.log(url);
-        http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        http.onreadystatechange = function() { //Call a function when the state changes.
-            if (http.readyState == 4 && http.status == 200) {
-                console.log('Teddy');
-                console.log(JSON.parse(http.responseText));
-            } else {
-                console.log(http.status)
-            }
-        }
+        const http = new XMLHttpRequest();
+        const url = 'http://localhost:3000/api/teddies/order';
+        http.open('POST', url);
+        http.setRequestHeader('Content-Type', 'application/json')
+            //http.onreadystatechange = function() { //Call a function when the state changes.
+            //  if (http.readyState == 4 && http.status == 200) {
+            //    console.log('Teddy');
+            //  console.log(JSON.parse(http.responseText));
+            //} else {
+            //  console.log(http.status)
+            //}
+            //}
+        console.log(data)
+        http.send(JSON.stringify({ contact: contact, products: products }));
 
-        http.send(JSON.stringify(data));
-
-        // "<a href='order.html?id=" + response + "' ></a>"
-
+        const response = http.responseText
+        console.log(response)
 
         //when the post request is succesfull, retrieve the order ID
         //send the order ID with the total cost of the product through URL to the confirmation page ( window.location.href)
 
 
+        http.onload = () => {
 
+            if (http.status >= 200 && http.status < 300) {
+                window.location.href = 'order.html?total=' + document.getElementById('total').innerHTML + '&response=' + response
 
+            }
+        }
 
-
-
-
-
+    } else if (contact.firstName != "" && contact.lastName != "" && contact.address != "" && contact.city != "" && ValidateEmail(contact.email) == false) {
+        alert('Please use a valid e-mail address!')
     } else {
         alert('Please fill all the fields!')
     }
 
-    console.log(data)
-}
+
+})
+
+
+
+
+
+//console.log(data)
+//}
 
 // order button
-let makeOrder = document.getElementById('order')
-makeOrder.addEventListener('click', postDetails)
+//let makeOrder = document.getElementById('order')
+//makeOrder.addEventListener('click', postDetails)
