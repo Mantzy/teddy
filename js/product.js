@@ -37,11 +37,15 @@ request.onload = function() {
             `
         console.log(data.colors)
         data.colors.forEach(element => {
-            teddyColor.innerHTML += `<div class="form-check form-check-inline pl-0">
-            <input type="radio" id="${element}" class="form-check-input" name="colorRadio" value="${element}">
-            <label class="form-check-label small text-uppercase card-link-secondary" for="${element}">${element}</label>
-        </div>`
+            teddyColor.innerHTML +=
+                //  `<div class="form-check form-check-inline pl-0">
+                //<input type="radio" id="${element}" class="form-check-input" name="colorRadio" value="${element}">
+                //<label class="form-check-label small text-uppercase card-link-secondary" for="${element}">${element}</label>
+                //</div>`
+                `<div class="form-check form-check-inline pl-0">
+        <option value = "${element}">${element}</option>
 
+        </div>`
         });
 
 
