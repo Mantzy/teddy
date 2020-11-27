@@ -31,7 +31,7 @@ function deleteProduct(_id, qty) {
 
     cartItems = JSON.parse(cartItems)
     let index = cartItems.findIndex(product => product.id == _id)
-    let itemNumber = cartItems.findIndex(product => product.productQty == qty)
+    qty = cartItems[index].productQty
     let quantity = localStorage.getItem('quantity')
     localStorage.setItem('quantity', quantity - qty)
     if (index != -1) {
@@ -105,7 +105,7 @@ function displayCart() {
         productContainer.innerHTML = output
 
         let displayTotal = document.getElementById('total')
-        displayTotal.innerHTML = `$${total}.00`;
+        displayTotal.innerHTML = `${total}.00`;
 
     }
 
@@ -185,7 +185,7 @@ postDetails.addEventListener('click', () => {
 
     //checking if all details are valid
     if (contact.firstName != "" && contact.lastName != "" && contact.address != "" && contact.city != "" && ValidateEmail(contact.email) != false) {
-        data = {
+        /*data = {
                 contact: contact,
                 products: products
             }
@@ -194,31 +194,52 @@ postDetails.addEventListener('click', () => {
         const url = 'http://localhost:3000/api/teddies/order';
         http.open('POST', url);
         http.setRequestHeader('Content-Type', 'application/json')
-            //http.onreadystatechange = function() { //Call a function when the state changes.
-            //  if (http.readyState == 4 && http.status == 200) {
-            //    console.log('Teddy');
-            //  console.log(JSON.parse(http.responseText));
-            //} else {
-            //  console.log(http.status)
-            //}
-            //}
-        console.log(data)
-        http.send(JSON.stringify({ contact: contact, products: products }));
+            
+       
 
-        const response = http.responseText
-        console.log(response)
+        //const response = http.responseText
+       
 
         //when the post request is succesfull, retrieve the order ID
         //send the order ID with the total cost of the product through URL to the confirmation page ( window.location.href)
 
+       // http.send(JSON.stringify({ contact: contact, products: products }));
+        // http.onload = () => {
 
-        http.onload = () => {
+        //  if (http.status >= 200 && http.status < 300) {
+        //      window.location.href = 'order.html?total=' + document.getElementById('total').innerHTML + '&response=' + response
 
-            if (http.status >= 200 && http.status < 300) {
-                window.location.href = 'order.html?total=' + document.getElementById('total').innerHTML + '&response=' + response
+        //  }
+        //}*/
+        const xhr = new XMLHttpRequest();
+
+        // listen for `load` event
+        xhr.onload = () => {
+
+            // print JSON response
+            if (xhr.status >= 200 && xhr.status < 300) {
+                localStorage.clear()
+                    // parse JSON
+                const response = JSON.parse(xhr.responseText);
+                console.log(response);
+                window.location.href = 'order.html?total=' + document.getElementById('total').innerHTML + '&orderId=' + response.orderId;
+
 
             }
-        }
+        };
+
+
+
+        // open request
+        xhr.open('POST', 'http://localhost:3000/api/teddies/order');
+
+        // set `Content-Type` header
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+
+        // send rquest with JSON payload
+        xhr.send(JSON.stringify({ contact: contact, products: products }));
+
 
     } else if (contact.firstName != "" && contact.lastName != "" && contact.address != "" && contact.city != "" && ValidateEmail(contact.email) == false) {
         alert('Please use a valid e-mail address!')
